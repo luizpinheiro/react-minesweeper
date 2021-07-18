@@ -4,6 +4,7 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  user-select: none;
 `
 
 export const Separator = styled.div`

@@ -23,8 +23,11 @@ export const Cell = styled.button<{
 }>`
   cursor: pointer;
   box-sizing: border-box;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   margin: 0;
   outline: none;

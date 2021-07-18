@@ -7,7 +7,7 @@ export const MainContainer = styled.div<{ size: number }>`
   padding: 10px;
   margin: 10px auto;
   min-width: 0;
-  width: ${(props) => props.size * 24 + 8}px;
+  width: ${(props) => props.size * 28 + 8}px;
   border: 2px solid;
   border-top-color: #fcfcfc;
   border-left-color: #fcfcfc;

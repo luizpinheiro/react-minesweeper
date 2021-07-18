@@ -34,6 +34,11 @@ const FieldCell = ({
     onPressEnd()
   }
 
+  const handleContextMenu = (e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault()
+    onBombToggle()
+  }
+
   return (
     <S.Cell
       disabled={visible}
@@ -43,18 +48,19 @@ const FieldCell = ({
       onMouseDown={handlePressStart}
       onMouseUp={handlePressEnd}
       onMouseOut={handlePressEnd}
+      onTouchStart={handlePressStart}
+      onTouchEnd={handlePressEnd}
+      onTouchCancel={handlePressEnd}
+      onTouchMove={handlePressEnd}
       onClick={onReveal}
-      onContextMenu={(e) => {
-        e.preventDefault()
-        onBombToggle()
-      }}
+      onContextMenu={handleContextMenu}
     >
       {visible && value > 0 && value}
       {visible && value === -1 && (
-        <img alt="" src={bombImage} width={15} height={15} />
+        <img alt="" src={bombImage} width={18} height={18} />
       )}
       {!visible && flaged && (
-        <img alt="" src={flagImage} width={15} height={15} />
+        <img alt="" src={flagImage} width={20} height={20} />
       )}
     </S.Cell>
   )

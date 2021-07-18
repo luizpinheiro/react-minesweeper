@@ -91,8 +91,18 @@ const Component = () => {
             target="_blank"
             rel="noreferrer"
           >
-            Luiz C.
+            Luiz C
           </a>
+          . <br />
+          Access the{' '}
+          <a
+            href="https://github.com/luizpinheiro/react-minesweeper/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            project&apos;s github
+          </a>{' '}
+          to see the code.
         </S.SignatureContainer>
       </S.MainContainer>
     </>
