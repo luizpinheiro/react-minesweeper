@@ -16,21 +16,47 @@ type Props = {
 const ControlButtom = ({ gameStatus, pressing, onClick }: Props) => (
   <S.MainContainer>
     <S.Button type="button" onClick={onClick}>
-      {gameStatus === GameStatus.LOST && (
-        <img alt="" src={deadImage} width={32} height={32} />
-      )}
-      {gameStatus === GameStatus.WIN && (
-        <img alt="" src={inLoveImage} width={32} height={32} />
-      )}
-      {gameStatus === GameStatus.IDLE && (
-        <img alt="" src={sleepingImage} width={32} height={32} />
-      )}
-      {gameStatus === GameStatus.ONGOING && !pressing && (
-        <img alt="" src={smileImage} width={32} height={32} />
-      )}
-      {gameStatus === GameStatus.ONGOING && pressing && (
-        <img alt="" src={scaredImage} width={32} height={32} />
-      )}
+      <img
+        alt=""
+        src={deadImage}
+        width={32}
+        height={32}
+        style={{ display: gameStatus === GameStatus.LOST ? 'block' : 'none' }}
+      />
+      <img
+        alt=""
+        src={inLoveImage}
+        width={32}
+        height={32}
+        style={{ display: gameStatus === GameStatus.WIN ? 'block' : 'none' }}
+      />
+      <img
+        alt=""
+        src={sleepingImage}
+        width={32}
+        height={32}
+        style={{ display: gameStatus === GameStatus.IDLE ? 'block' : 'none' }}
+      />
+      <img
+        alt=""
+        src={smileImage}
+        width={32}
+        height={32}
+        style={{
+          display:
+            gameStatus === GameStatus.ONGOING && !pressing ? 'block' : 'none',
+        }}
+      />
+      <img
+        alt=""
+        src={scaredImage}
+        width={32}
+        height={32}
+        style={{
+          display:
+            gameStatus === GameStatus.ONGOING && pressing ? 'block' : 'none',
+        }}
+      />
     </S.Button>
   </S.MainContainer>
 )

@@ -59,15 +59,27 @@ const FieldCell = ({
       onContextMenu={handleContextMenu}
     >
       {visible && value > 0 && value}
-      {visible && value === -1 && (
-        <img alt="" src={bombImage} width={18} height={18} />
-      )}
-      {!visible && flagged && (
-        <img alt="" src={flagImage} width={20} height={20} />
-      )}
-      {!visible && doubt && (
-        <img alt="" src={questionImage} width={16} height={16} />
-      )}
+      <img
+        alt=""
+        src={bombImage}
+        width={18}
+        height={18}
+        style={{ display: visible && value === -1 ? 'block' : 'none' }}
+      />
+      <img
+        alt=""
+        src={flagImage}
+        width={18}
+        height={18}
+        style={{ display: flagged ? 'block' : 'none' }}
+      />
+      <img
+        alt=""
+        src={questionImage}
+        width={18}
+        height={18}
+        style={{ display: doubt ? 'block' : 'none' }}
+      />
     </S.Cell>
   )
 }
