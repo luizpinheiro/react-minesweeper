@@ -21,6 +21,19 @@ export const MainContainer = styled.div<{ size: number }>`
   }
 `
 
+export const PreHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+
+  label {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+`
 export const HeaderContainer = styled.div`
   padding: 5px;
   border: 3px solid;
@@ -46,7 +59,7 @@ export const BodyContainer = styled.div`
 `
 
 export const SelectDifficulty = styled.select`
-  margin: 0 auto;
+  margin: 0;
 `
 
 export const SignatureContainer = styled.div`

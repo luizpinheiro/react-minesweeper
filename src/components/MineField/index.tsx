@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import * as S from './styles'
 import FieldCell from '../FieldCell'
 import { rangeArray } from '../../utils/numbers'
 import { GameStatus } from '../../types/enums'
 import { neighborsPositions } from '../../utils/miscellaneous'
+import flagSound from './sounds/flagSound.mp3'
+import revealSound from './sounds/revealSound.mp3'
+import questionSound from './sounds/questionSound.mp3'
 
 type Props = {
   size: number
@@ -14,6 +17,7 @@ type Props = {
   onBomb: () => void
   onPressStart: () => void
   onPressEnd: () => void
+  soundEnabled: boolean
 }
 
 enum CellState {
@@ -42,7 +46,11 @@ const MineField = ({
   onPressStart,
   onPressEnd,
   gameStatus,
+  soundEnabled,
 }: Props) => {
+  const flagSoundRef = useRef<HTMLAudioElement>(null)
+  const revealSoundRef = useRef<HTMLAudioElement>(null)
+  const questionSoundRef = useRef<HTMLAudioElement>(null)
   const [visibleField, setVisibleField] = useState(() =>
     rangeArray(size).map(() => rangeArray(size)),
   )
@@ -52,11 +60,16 @@ const MineField = ({
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
 
-      if (visibleField[y][x] === CellState.FLAGGED)
+      if (visibleField[y][x] === CellState.FLAGGED) {
         visibleField[y][x] = CellState.DOUBT
-      else if (visibleField[y][x] === CellState.DOUBT)
+        soundEnabled && questionSoundRef.current?.play()
+      } else if (visibleField[y][x] === CellState.DOUBT) {
         visibleField[y][x] = CellState.UNREVEALED
-      else visibleField[y][x] = CellState.FLAGGED
+        soundEnabled && questionSoundRef.current?.play()
+      } else {
+        visibleField[y][x] = CellState.FLAGGED
+        soundEnabled && flagSoundRef.current?.play()
+      }
 
       setVisibleField([...visibleField.map((i) => [...i])])
     },
@@ -78,6 +91,7 @@ const MineField = ({
       // or else we reveal all of the bombs and trigger the appropriate callback
       if (fieldMap[y][x] >= 0) {
         onScore()
+        soundEnabled && revealSoundRef.current?.play()
       } else {
         revealAllBombs(fieldMap, visibleField)
         onBomb()
@@ -124,7 +138,20 @@ const MineField = ({
     return result
   }, [visibleField])
 
-  return <S.MainContainer>{field}</S.MainContainer>
+  return (
+    <>
+      <S.MainContainer>{field}</S.MainContainer>
+      <audio ref={flagSoundRef} autoPlay={false} controls={false}>
+        <source src={flagSound} type="audio/mp3" />
+      </audio>
+      <audio ref={revealSoundRef} autoPlay={false} controls={false}>
+        <source src={revealSound} type="audio/mp3" />
+      </audio>
+      <audio ref={questionSoundRef} autoPlay={false} controls={false}>
+        <source src={questionSound} type="audio/mp3" />
+      </audio>
+    </>
+  )
 }
 
 export default MineField

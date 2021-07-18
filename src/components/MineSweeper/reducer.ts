@@ -8,10 +8,12 @@ export enum Actions {
   'PRESS_START',
   'PRESS_END',
   'CHANGE_DIFFICULTY',
+  'TOGGLE_SOUND',
 }
 
 export type State = {
   size: number
+  soundEnabled: boolean
   totalBombs: number
   map: number[][]
   score: number
@@ -26,8 +28,9 @@ export type Action = {
 
 const INITIAL_SIZE = 12
 
-export const initialState = {
+export const initialState: State = {
   size: INITIAL_SIZE,
+  soundEnabled: true,
   totalBombs: calcBombsNumber(INITIAL_SIZE),
   map: generateMap(INITIAL_SIZE, calcBombsNumber(INITIAL_SIZE)),
   score: 0,
@@ -80,6 +83,11 @@ export default (state: State, action: Action): State => {
         map: generateMap(newSize, totalBombs),
       }
     }
+    case Actions.TOGGLE_SOUND:
+      return {
+        ...state,
+        soundEnabled: !state.soundEnabled,
+      }
     default:
       return state
   }
