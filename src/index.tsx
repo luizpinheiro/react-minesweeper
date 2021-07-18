@@ -30,6 +30,13 @@ ReactDOM.render(
           www.flaticon.com
         </a>
       </div>
+      <div>
+        Audio effects from{' '}
+        <a href="https://mixkit.co/" target="_blank" rel="noreferrer">
+          mixkit.co
+        </a>
+        .
+      </div>
     </div>
   </React.StrictMode>,
   document.getElementById('root'),
