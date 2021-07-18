@@ -73,7 +73,7 @@ const MineField = ({
 
       setVisibleField([...visibleField.map((i) => [...i])])
     },
-    [gameStatus, visibleField],
+    [gameStatus, visibleField, soundEnabled],
   )
 
   const handleReveal = useCallback(
@@ -106,7 +106,7 @@ const MineField = ({
 
       if (updateState) setVisibleField([...visibleField.map((i) => [...i])])
     },
-    [size, fieldMap, onBomb, onScore, visibleField, gameStatus],
+    [size, fieldMap, onBomb, onScore, visibleField, gameStatus, soundEnabled],
   )
 
   useEffect(() => {

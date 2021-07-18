@@ -9,6 +9,8 @@ import reducer, { Actions, initialState } from './reducer'
 import explosionSound from './sounds/explosion.mp3'
 import winSound from './sounds/win.mp3'
 import { GameStatus } from '../../types/enums'
+import Signature from '../Signature'
+import Settings from '../Settings'
 
 const Component = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -46,11 +48,10 @@ const Component = () => {
   }, [dispatch])
 
   const handleDifficultyChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = parseInt(e.target.value, 10)
+    (newSize: number) => {
       dispatch({
         type: Actions.CHANGE_DIFFICULTY,
-        newSize: value,
+        newSize,
       })
     },
     [dispatch],
@@ -81,26 +82,12 @@ const Component = () => {
   return (
     <>
       <S.MainContainer size={state.size}>
-        <S.PreHeader>
-          <label>
-            <input
-              type="checkbox"
-              checked={state.soundEnabled}
-              onChange={handleToggleSound}
-            />{' '}
-            Sounds On
-          </label>
-          <S.SelectDifficulty
-            value={state.size}
-            onChange={handleDifficultyChange}
-          >
-            <option value={8}>very easy</option>
-            <option value={12}>easy</option>
-            <option value={16}>medium</option>
-            <option value={32}>hard</option>
-            <option value={40}>I dare you</option>
-          </S.SelectDifficulty>
-        </S.PreHeader>
+        <Settings
+          size={state.size}
+          soundEnabled={state.soundEnabled}
+          onToggleSound={handleToggleSound}
+          onDifficultyChange={handleDifficultyChange}
+        />
         <S.HeaderContainer>
           <Score current={state.score} />
           <ControlButton
@@ -123,24 +110,7 @@ const Component = () => {
           />
         </S.BodyContainer>
         <S.SignatureContainer>
-          Made with React and a lot of <span>&#10084;</span> by{' '}
-          <a
-            href="https://www.linkedin.com/in/lcpalves/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Luiz C
-          </a>
-          . <br />
-          Access the{' '}
-          <a
-            href="https://github.com/luizpinheiro/react-minesweeper/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            project&apos;s github
-          </a>{' '}
-          to see the code.
+          <Signature />
         </S.SignatureContainer>
       </S.MainContainer>
       <audio ref={lostSoundRef} controls={false} autoPlay={false}>
