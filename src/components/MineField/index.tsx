@@ -15,13 +15,20 @@ type Props = {
   onPressEnd: () => void
 }
 
+enum CellValue {
+  'UNREVEALED',
+  'REVEALED',
+  'FLAG',
+  'DOUBT',
+}
+
 const revealAllBombs = (
   fieldMap: number[][],
   visibleField: number[][],
 ): void => {
   fieldMap.forEach((row, y) =>
     row.forEach((v, x) => {
-      visibleField[y][x] = 1
+      visibleField[y][x] = CellValue.REVEALED
     }),
   )
 }
@@ -43,9 +50,13 @@ const MineField = ({
     (y: number, x: number) => {
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
-      if (visibleField[y][x] === 2) visibleField[y][x] = 3
-      else if (visibleField[y][x] === 3) visibleField[y][x] = 0
-      else visibleField[y][x] = 2
+
+      if (visibleField[y][x] === CellValue.FLAG)
+        visibleField[y][x] = CellValue.DOUBT
+      else if (visibleField[y][x] === CellValue.DOUBT)
+        visibleField[y][x] = CellValue.UNREVEALED
+      else visibleField[y][x] = CellValue.FLAG
+
       setVisibleField([...visibleField.map((i) => [...i])])
     },
     [gameStatus, visibleField],
@@ -103,9 +114,9 @@ const MineField = ({
           <React.Fragment key={k}>
             {x === 0 && <S.Separator />}
             <FieldCell
-              visible={visibleField[y][x] === 1}
-              flaged={visibleField[y][x] === 2}
-              doubt={visibleField[y][x] === 3}
+              visible={visibleField[y][x] === CellValue.REVEALED}
+              flaged={visibleField[y][x] === CellValue.FLAG}
+              doubt={visibleField[y][x] === CellValue.DOUBT}
               value={value}
               onReveal={() => handleReveal(y, x)}
               onBombToggle={() => onBombToggle(y, x)}
