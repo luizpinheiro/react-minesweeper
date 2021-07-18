@@ -4,6 +4,7 @@ import * as S from './styles'
 import FieldCell from '../FieldCell'
 import { rangeArray } from '../../utils/numbers'
 import { GameStatus } from '../../types/enums'
+import { neighborsPositions } from '../../utils/miscellaneous'
 
 type Props = {
   size: number
@@ -18,7 +19,7 @@ type Props = {
 enum CellState {
   'UNREVEALED',
   'REVEALED',
-  'FLAG',
+  'FLAGGED',
   'DOUBT',
 }
 
@@ -51,11 +52,11 @@ const MineField = ({
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
 
-      if (visibleField[y][x] === CellState.FLAG)
+      if (visibleField[y][x] === CellState.FLAGGED)
         visibleField[y][x] = CellState.DOUBT
       else if (visibleField[y][x] === CellState.DOUBT)
         visibleField[y][x] = CellState.UNREVEALED
-      else visibleField[y][x] = CellState.FLAG
+      else visibleField[y][x] = CellState.FLAGGED
 
       setVisibleField([...visibleField.map((i) => [...i])])
     },
@@ -85,22 +86,8 @@ const MineField = ({
       // If we don't have any bombs on all of the neighbors then we can safely
       // reveal all of them
       if (fieldMap[y][x] === 0) {
-        // try to reveal the NorthWest position
-        handleReveal(y - 1, x - 1, false)
-        // try to reveal the North position
-        handleReveal(y, x - 1, false)
-        // try to reveal the NorthEast position
-        handleReveal(y + 1, x - 1, false)
-        // try to reveal the West position
-        handleReveal(y - 1, x, false)
-        // try to reveal the East position
-        handleReveal(y + 1, x, false)
-        // Try to reveal the SouthWest position
-        handleReveal(y - 1, x + 1, false)
-        // Try to reveal the South position
-        handleReveal(y, x + 1, false)
-        // Try to reveal the SouthEast position
-        handleReveal(y + 1, x + 1, false)
+        const neighborhood = neighborsPositions(y, x, size)
+        neighborhood.forEach(([y1, x1]) => handleReveal(y1, x1, false))
       }
 
       if (updateState) setVisibleField([...visibleField.map((i) => [...i])])
@@ -122,7 +109,7 @@ const MineField = ({
             {x === 0 && <S.Separator />}
             <FieldCell
               visible={visibleField[y][x] === CellState.REVEALED}
-              flaged={visibleField[y][x] === CellState.FLAG}
+              flagged={visibleField[y][x] === CellState.FLAGGED}
               doubt={visibleField[y][x] === CellState.DOUBT}
               value={value}
               onReveal={() => handleReveal(y, x)}
@@ -135,14 +122,7 @@ const MineField = ({
       }),
     )
     return result
-  }, [
-    visibleField,
-    onPressStart,
-    onPressEnd,
-    fieldMap,
-    handleReveal,
-    onBombToggle,
-  ])
+  }, [visibleField])
 
   return <S.MainContainer>{field}</S.MainContainer>
 }

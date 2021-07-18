@@ -55,6 +55,7 @@
     "no-use-before-define": "off",
     "no-param-reassign": "off",
     "no-shadow": "off",
+    "no-continue": "off",
     "no-unused-vars": "off",
     "no-unused-expressions": "off",
     "arrow-body-style": ["error", "as-needed"],

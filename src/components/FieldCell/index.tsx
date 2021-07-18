@@ -8,7 +8,7 @@ import questionImage from './question.png'
 type Props = {
   value: number
   visible: boolean
-  flaged: boolean
+  flagged: boolean
   doubt: boolean
   onReveal: () => void
   onBombToggle: () => void
@@ -19,7 +19,7 @@ type Props = {
 const FieldCell = ({
   value,
   visible,
-  flaged,
+  flagged,
   doubt,
   onReveal,
   onBombToggle,
@@ -62,7 +62,7 @@ const FieldCell = ({
       {visible && value === -1 && (
         <img alt="" src={bombImage} width={18} height={18} />
       )}
-      {!visible && flaged && (
+      {!visible && flagged && (
         <img alt="" src={flagImage} width={20} height={20} />
       )}
       {!visible && doubt && (
