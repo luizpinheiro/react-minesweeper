@@ -36,4 +36,4 @@ const SegmentDisplay = ({ number, places }: Props) => {
   )
 }
 
-export default SegmentDisplay
+export default React.memo(SegmentDisplay)

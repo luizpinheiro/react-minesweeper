@@ -77,4 +77,4 @@ const NumberSegment = ({ number }: Props) => (
   </S.MainContainer>
 )
 
-export default NumberSegment
+export default React.memo(NumberSegment)

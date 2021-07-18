@@ -12,7 +12,7 @@ import { GameStatus } from '../../types/enums'
 import Signature from '../Signature'
 import Settings from '../Settings'
 
-const Component = () => {
+const MineSweeper = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const lostSoundRef = useRef<HTMLAudioElement>(null)
   const winSoundRef = useRef<HTMLAudioElement>(null)
@@ -123,4 +123,4 @@ const Component = () => {
   )
 }
 
-export default Component
+export default React.memo(MineSweeper)

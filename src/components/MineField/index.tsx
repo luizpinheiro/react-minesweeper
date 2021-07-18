@@ -154,4 +154,4 @@ const MineField = ({
   )
 }
 
-export default MineField
+export default React.memo(MineField)

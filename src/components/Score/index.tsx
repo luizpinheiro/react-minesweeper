@@ -13,4 +13,4 @@ const Score = ({ current }: Props) => (
   </S.MainContainer>
 )
 
-export default Score
+export default React.memo(Score)

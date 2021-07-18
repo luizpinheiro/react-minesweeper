@@ -23,4 +23,4 @@ const Signature = () => (
   </>
 )
 
-export default Signature
+export default React.memo(Signature)

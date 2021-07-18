@@ -61,4 +61,4 @@ const ControlButtom = ({ gameStatus, pressing, onClick }: Props) => (
   </S.MainContainer>
 )
 
-export default ControlButtom
+export default React.memo(ControlButtom)
