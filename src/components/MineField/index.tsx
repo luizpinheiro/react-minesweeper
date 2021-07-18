@@ -15,7 +15,7 @@ type Props = {
   onPressEnd: () => void
 }
 
-enum CellValue {
+enum CellState {
   'UNREVEALED',
   'REVEALED',
   'FLAG',
@@ -28,7 +28,7 @@ const revealAllBombs = (
 ): void => {
   fieldMap.forEach((row, y) =>
     row.forEach((v, x) => {
-      visibleField[y][x] = CellValue.REVEALED
+      visibleField[y][x] = CellState.REVEALED
     }),
   )
 }
@@ -51,11 +51,11 @@ const MineField = ({
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
 
-      if (visibleField[y][x] === CellValue.FLAG)
-        visibleField[y][x] = CellValue.DOUBT
-      else if (visibleField[y][x] === CellValue.DOUBT)
-        visibleField[y][x] = CellValue.UNREVEALED
-      else visibleField[y][x] = CellValue.FLAG
+      if (visibleField[y][x] === CellState.FLAG)
+        visibleField[y][x] = CellState.DOUBT
+      else if (visibleField[y][x] === CellState.DOUBT)
+        visibleField[y][x] = CellState.UNREVEALED
+      else visibleField[y][x] = CellState.FLAG
 
       setVisibleField([...visibleField.map((i) => [...i])])
     },
@@ -72,11 +72,22 @@ const MineField = ({
         return
 
       visibleField[y][x] = 1
-      if (fieldMap[y][x] >= 0) onScore()
+
+      // If we didn't revealed a bomb we must increase the score
+      // or else we reveal all of the bombs and trigger the appropriate callback
+      if (fieldMap[y][x] >= 0) {
+        onScore()
+      } else {
+        revealAllBombs(fieldMap, visibleField)
+        onBomb()
+      }
+
+      // If we don't have any bombs on all of the neighbors then we can safely
+      // reveal all of them
       if (fieldMap[y][x] === 0) {
         // try to reveal the NorthWest position
         handleReveal(y - 1, x - 1, false)
-        // try to reveal the North oposition
+        // try to reveal the North position
         handleReveal(y, x - 1, false)
         // try to reveal the NorthEast position
         handleReveal(y + 1, x - 1, false)
@@ -90,10 +101,6 @@ const MineField = ({
         handleReveal(y, x + 1, false)
         // Try to reveal the SouthEast position
         handleReveal(y + 1, x + 1, false)
-      }
-      if (fieldMap[y][x] === -1) {
-        revealAllBombs(fieldMap, visibleField)
-        onBomb()
       }
 
       if (updateState) setVisibleField([...visibleField.map((i) => [...i])])
@@ -114,9 +121,9 @@ const MineField = ({
           <React.Fragment key={k}>
             {x === 0 && <S.Separator />}
             <FieldCell
-              visible={visibleField[y][x] === CellValue.REVEALED}
-              flaged={visibleField[y][x] === CellValue.FLAG}
-              doubt={visibleField[y][x] === CellValue.DOUBT}
+              visible={visibleField[y][x] === CellState.REVEALED}
+              flaged={visibleField[y][x] === CellState.FLAG}
+              doubt={visibleField[y][x] === CellState.DOUBT}
               value={value}
               onReveal={() => handleReveal(y, x)}
               onBombToggle={() => onBombToggle(y, x)}
@@ -128,7 +135,14 @@ const MineField = ({
       }),
     )
     return result
-  }, [visibleField])
+  }, [
+    visibleField,
+    onPressStart,
+    onPressEnd,
+    fieldMap,
+    handleReveal,
+    onBombToggle,
+  ])
 
   return <S.MainContainer>{field}</S.MainContainer>
 }
