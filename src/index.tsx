@@ -16,8 +16,12 @@ ReactDOM.render(
           title="Vectors Market"
         >
           Vectors Market
-        </a>{' '}
-        and{' '}
+        </a>
+        ,{' '}
+        <a href="https://www.flaticon.com/authors/vaadin" title="Vaadin">
+          Vaadin
+        </a>
+        , and{' '}
         <a href="https://www.flaticon.com/authors/surang" title="surang">
           surang
         </a>{' '}

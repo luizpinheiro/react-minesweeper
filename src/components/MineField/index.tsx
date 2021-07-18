@@ -43,7 +43,8 @@ const MineField = ({
     (y: number, x: number) => {
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
-      if (visibleField[y][x] === 2) visibleField[y][x] = 0
+      if (visibleField[y][x] === 2) visibleField[y][x] = 3
+      else if (visibleField[y][x] === 3) visibleField[y][x] = 0
       else visibleField[y][x] = 2
       setVisibleField([...visibleField.map((i) => [...i])])
     },
@@ -104,6 +105,7 @@ const MineField = ({
             <FieldCell
               visible={visibleField[y][x] === 1}
               flaged={visibleField[y][x] === 2}
+              doubt={visibleField[y][x] === 3}
               value={value}
               onReveal={() => handleReveal(y, x)}
               onBombToggle={() => onBombToggle(y, x)}

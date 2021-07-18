@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 import * as S from './styles'
 import bombImage from './bomb.png'
 import flagImage from './flag.png'
+import questionImage from './question.png'
 
 type Props = {
   value: number
   visible: boolean
   flaged: boolean
+  doubt: boolean
   onReveal: () => void
   onBombToggle: () => void
   onPressStart: () => void
@@ -18,6 +20,7 @@ const FieldCell = ({
   value,
   visible,
   flaged,
+  doubt,
   onReveal,
   onBombToggle,
   onPressStart,
@@ -61,6 +64,9 @@ const FieldCell = ({
       )}
       {!visible && flaged && (
         <img alt="" src={flagImage} width={20} height={20} />
+      )}
+      {!visible && doubt && (
+        <img alt="" src={questionImage} width={16} height={16} />
       )}
     </S.Cell>
   )
