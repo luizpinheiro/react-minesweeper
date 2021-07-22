@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 
 import * as S from './styles'
-import bombImage from './bomb.png'
-import flagImage from './flag.png'
-import questionImage from './question.png'
 
 type Props = {
   value: number
@@ -27,6 +24,7 @@ const FieldCell = ({
   onPressEnd,
 }: Props) => {
   const [pressed, setPressed] = useState(false)
+  const [timeoutId, setTimeoutId] = useState<number | null>(null)
 
   const handlePressStart = () => {
     setPressed(true)
@@ -42,44 +40,41 @@ const FieldCell = ({
     onBombToggle()
   }
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault()
+    setPressed(true)
+    setTimeoutId(
+      window.setTimeout(() => {
+        onBombToggle()
+        setTimeoutId(null)
+      }, 500),
+    )
+  }
+  const handleTouchEnd = () => {
+    setPressed(false)
+    if (timeoutId) window.clearTimeout(timeoutId)
+  }
+
   return (
     <S.Cell
       disabled={visible}
       pressed={pressed}
       visible={visible}
+      bomb={visible && value === -1}
+      question={doubt}
+      flagged={flagged}
       value={value}
       onMouseDown={handlePressStart}
       onMouseUp={handlePressEnd}
       onMouseOut={handlePressEnd}
-      onTouchStart={handlePressStart}
-      onTouchEnd={handlePressEnd}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onTouchCancel={handlePressEnd}
       onTouchMove={handlePressEnd}
       onClick={onReveal}
       onContextMenu={handleContextMenu}
     >
       {visible && value > 0 && value}
-      <img
-        alt=""
-        src={bombImage}
-        width={18}
-        height={18}
-        style={{ display: visible && value === -1 ? 'block' : 'none' }}
-      />
-      <img
-        alt=""
-        src={flagImage}
-        width={18}
-        height={18}
-        style={{ display: flagged ? 'block' : 'none' }}
-      />
-      <img
-        alt=""
-        src={questionImage}
-        width={18}
-        height={18}
-        style={{ display: doubt ? 'block' : 'none' }}
-      />
     </S.Cell>
   )
 }

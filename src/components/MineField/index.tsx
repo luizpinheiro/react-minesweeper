@@ -71,6 +71,8 @@ const MineField = ({
         soundEnabled && flagSoundRef.current?.play()
       }
 
+      navigator.vibrate && navigator.vibrate(100)
+
       setVisibleField([...visibleField.map((i) => [...i])])
     },
     [gameStatus, visibleField, soundEnabled],

@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   body {
+    user-select: none;
     background: #efefef;
     padding: 0;
     margin: 0;
