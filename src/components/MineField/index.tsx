@@ -59,6 +59,7 @@ const MineField = ({
     (y: number, x: number) => {
       if (gameStatus === GameStatus.WIN || gameStatus === GameStatus.LOST)
         return
+      if (visibleField[y][x] === CellState.REVEALED) return
 
       if (visibleField[y][x] === CellState.FLAGGED) {
         visibleField[y][x] = CellState.DOUBT
